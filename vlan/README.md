@@ -2,8 +2,10 @@
 
 ## Настройка коммутаторов на использование VTP для обновлений сетей VLAN. sw1 настраивается в качестве сервера.  sw2 и sw3 настраиваются как клиенты.
 
-### Настройка sw1 в качестве сервера VTP:
 
+#### Настройка sw1 в качестве сервера VTP:
+
+```
 sw1(config)#vtp domain ccna
 Changing VTP domain name from NULL to ccna
 sw1(config)#vtp mode server
@@ -30,9 +32,11 @@ MD5 digest                        : 0xB7 0xF1 0x21 0x12 0x5F 0x32 0x9E 0x96
                                     0x8A 0x0E 0x9E 0xDA 0xB8 0xAF 0xED 0x4C 
 *** MD5 digest checksum mismatch on trunk: Fa0/1 ***
 *** MD5 digest checksum mismatch on trunk: Fa0/2 ***
+```
 
 ### Настройка sw2 в качестве клиента VTP:
 
+```
 sw2(config)#vtp domain ccna
 Domain name already set to ccna.
 sw2(config)#vtp mode client 
@@ -52,9 +56,11 @@ VTP V2 Mode                     : Disabled
 VTP Traps Generation            : Disabled
 MD5 digest                      : 0xB7 0xF1 0x21 0x12 0x5F 0x32 0x9E 0x96 
 Configuration last modified by 0.0.0.0 at 0-0-00 00:00:00
+```
 
 ### Настройка sw3 в качестве клиента VTP:
 
+```
 sw3(config)#vtp domain ccna
 Domain name already set to ccna.
 sw3(config)#vtp mode client
@@ -74,11 +80,14 @@ VTP V2 Mode                     : Disabled
 VTP Traps Generation            : Disabled
 MD5 digest                      : 0xB7 0xF1 0x21 0x12 0x5F 0x32 0x9E 0x96 
 Configuration last modified by 0.0.0.0 at 0-0-00 00:00:00
+```
 
 ## Настройка динамического протокола транкинга (DTP)
 
+
 ### Настройка динамического магистрального канала между sw1 и sw2 и статического магистрального канал между sw2 и sw3:
 
+```
 sw1#show interfaces f0/3 switchport 
 Name: Fa0/3
 Switchport: Enabled
@@ -132,7 +141,6 @@ Fa0/3       1
 Port        Vlans in spanning tree forwarding state and not pruned
 Fa0/4       1
 
-
 sw2(config)#interface f0/1
 sw2(config-if)#switchport mode trunk 
 
@@ -181,11 +189,13 @@ Fa0/2       1
 Fa0/3       1
 Port        Vlans in spanning tree forwarding state and not pruned
 Fa0/4       none
+```
 
 ## Добавление сетей VLAN и назначение портов:
 
 ### добавление сеей VLAN выполяетя на коммутаторе sw1:
 
+```
 sw1(config)#vlan 10
 sw1(config-vlan)#name red
 sw1(config-vlan)#vlan 20
@@ -213,9 +223,11 @@ VLAN Name                             Status    Ports
 1003 token-ring-default               act/unsup 
 1004 fddinet-default                  act/unsup 
 1005 trnet-default                    act/unsup 
+```
 
 ### проверка обновления VTP на коммутаторах sw2 и sw3 которые настроены как VTP-клиенты:
 
+```
 sw3#show vlan brief
 VLAN Name                             Status    Ports
 ---- -------------------------------- --------- -------------------------------
@@ -251,16 +263,20 @@ VLAN Name                             Status    Ports
 1003 token-ring-default               act/unsup 
 1004 fddinet-default                  act/unsup 
 1005 trnet-default                    act/unsup 
+```
 
 ### Назначение портов сетям VLAN.
 
 #### На коммутаторе sw1 переводим порт F0/15 в режим доступа и назначаем его сети VLAN 20
+```
 sw1(config)#interface f0/15
 sw1(config-if)#switchport mode access 
 sw1(config-if)#switchport access vlan 20
+```
 
 #### На коммутаторвх sw2 sw3 переводим порт F0/15 в режим доступа и назначаем его сети VLAN 10
 
+```
 sw2(config)#interface f0/15
 sw2(config-if)#switchport mode access 
 sw2(config-if)#switchport access vlan 10
@@ -268,10 +284,11 @@ sw2(config-if)#switchport access vlan 10
 sw3(config)#interface f0/15
 sw3(config-if)#switchport mode access 
 sw3(config-if)#switchport access vlan 10
-
+```
 
 #### Настройка IP-адреса на коммутаторах для сети VLAN 99
 
+```
 sw1(config)#interface vlan 99
 sw1(config-if)#ip address 192.168.99.1 255.255.255.0
 sw1(config-if)#no shutdown 
@@ -283,18 +300,20 @@ sw2(config-if)#no shutdown
 sw3(config)#interface vlan 99
 sw3(config-if)#ip address 192.168.99.3 255.255.255.0
 sw3(config-if)#no shutdown 
-
-
+```
 
 ### Настройка сети VLAN расширенного диапазона:
 
 #### Перевод VTP на коммутаторе sw2 в прозрачный режим
 
+```
 sw2(config)#vtp mode transparent 
 Setting device to VTP TRANSPARENT mode.
+```
 
 #### проверка режима VTP 
 
+```
 sw2#sh vtp status
 VTP Version                     : 2
 Configuration Revision          : 0
@@ -308,14 +327,18 @@ VTP Traps Generation            : Disabled
 MD5 digest                      : 0xC7 0x94 0x13 0xB0 0x34 0xFB 0x11 0x35 
 Configuration last modified by 0.0.0.0 at 3-1-93 01:21:29
 sw2#
+```
 
 ### Создание сети VLAN 2000 расширенного диапазона
 
+```
 sw2(config)#vlan 2000
 sw2(config-vlan)#end
+```
 
 #### проверка
 
+```
 sw2#sh vlan brief 
 VLAN Name                             Status    Ports
 ---- -------------------------------- --------- -------------------------------
@@ -334,12 +357,12 @@ VLAN Name                             Status    Ports
 1004 fddinet-default                  act/unsup 
 1005 trnet-default                    act/unsup 
 2000 VLAN2000                         active    
-
-
+```
 
 
 ### Проверка наличия сквозного соединения:
 
+```
 sw1>ping 192.168.20.1
 Type escape sequence to abort.
 Sending 5, 100-byte ICMP Echos to 192.168.20.1, timeout is 2 seconds:
@@ -422,3 +445,7 @@ Sending 5, 100-byte ICMP Echos to 192.168.99.2, timeout is 2 seconds:
 !!!!!
 Success rate is 100 percent (5/5), round-trip min/avg/max = 1/3/4 ms
 sw3>
+```
+![](https://github.com/Vl-linux/network/blob/master/vlan/pc1.png)
+![](https://github.com/Vl-linux/network/blob/master/vlan/pc2.png)
+![](https://github.com/Vl-linux/network/blob/master/vlan/pc3.png)
