@@ -2,8 +2,8 @@
 
 ## Настройка коммутаторов на использование VTP для обновлений сетей VLAN. sw1 настраивается в качестве сервера.  sw2 и sw3 настраиваются как клиенты.
 
-общая схема
 ![](https://github.com/Vl-linux/network/blob/master/vlan/sh1.png)
+
 подробное выполнение в консоли по каждому коммутатору сохранено в log-файлах
 
 #### Настройка sw1 в качестве сервера VTP:
@@ -450,5 +450,7 @@ Success rate is 100 percent (5/5), round-trip min/avg/max = 1/3/4 ms
 sw3>
 ```
 ![](https://github.com/Vl-linux/network/blob/master/vlan/pc1.png)
+
 ![](https://github.com/Vl-linux/network/blob/master/vlan/pc2.png)
+
 ![](https://github.com/Vl-linux/network/blob/master/vlan/pc3.png)
